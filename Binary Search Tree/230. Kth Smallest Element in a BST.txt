@@ -1,0 +1,182 @@
+https://www.youtube.com/watch?v=9TJYWh0adfk&list=PLgUwDviBIf0q8Hkd7bK2Bpryj2xVJk8Vk&index=46
+
+Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.
+
+NAIVE APPROACH:
+
+One of the naive ways that you can do is to use any of the dfs traversal, inorder postorder preorder and then you can just go to all the nodes and 
+you can store all the nodes into some container, in C plus plus it can be a vector, you can store all of them over there and just then you can sort them and 
+once you have sorted that entire container, of the container you can take the kth smallest element from the front. That's it!
+
+But the problem in this particular approach is with the time complexity and space complexity. 
+O(N) time for traversal and O(NlogN) for sorting the entire container and 
+you will be using extra space of O(N) in order to store the entire binary search tree into a container. 
+
+Time Complexity: O(N)+O(NlogN)
+Space Complexity: O(N)
+
+
+EFFICIENT APPROACH:
+
+There is a very important property of Binary Search Tree that everything to the left of root is smaller and to the right is greater.
+THEREFORE, INORDER(LEFT ROOT RIGHT) IS ALWAYS SORTED.
+So, if it is sorted I can very easily find the kth smallest element.
+In Inorder DFS Traversal, We will be eliminating the extra O(NlogN) that was required for sorting in any dfs traversal.
+
+Still, We will using extra space of O(N) in order to store the entire binary search tree into a container. 
+
+How can you make sure that we don't use an extra space?
+If you are doing it inorder to write so why can't you keep a counter= zero so whenever you visit the node because 
+inorder traversal is left then the node of the root and then the right so you are going left left left so 
+whenever you visit a particular node that means that is when the traversal is happening that is when you are visiting a 
+particular node so whenever you are visiting a node, why can't you do a counter plus plus because that is when you are 
+visiting a node. In the traversal if you can do counter++ and at the moment the counter becomes==k, I can say my answer 
+will be the node which I am currently standing at.That is my kth smallest element.
+
+
+I can use any type of traversal for solving this problem-
+
+1. Recursive INORDER Traversal
+Time Complexity: O(N)
+Space Complexity: O(N)
+ 
+2. Iterative INORDER Traversal
+Time Complexity: O(N)
+Space Complexity: O(N)
+
+3. Morris INORDER Traversal
+Time Complexity: O(N)
+Space Complexity: O(1)
+
+
+/*
+Approach1: Brute force. T.C-> O(n + nlogn),  S.C ->O(n)
+class Solution {
+public:
+    void preorder(TreeNode* root, vector<int> &v) {
+        if(root == nullptr) return;
+        
+        v.push_back(root->val);
+        preorder(root->left, v);
+        preorder(root->right, v);
+    }
+    int kthSmallest(TreeNode* root, int k) {
+        vector<int> v;
+        
+        preorder(root, v);
+        sort(v.begin(), v.end());
+        
+        return v[k-1];
+    }
+};
+
+Approach 2: Using Recursive Traversal for Inorder.  T.C -> O(n), S.C -> O(n)
+
+Using the property that inorder traversal of a BST results in sorted order of elements. So, visit the node in that order.
+
+class Solution {
+public:
+    void inorder(TreeNode* root, int k, int &count, int &res) {
+        if(root == nullptr) return;
+        
+        inorder(root->left, k, count, res);
+        
+        count++;
+        if(count == k) {
+            res = root->val;
+            return;
+        }
+        
+        inorder(root->right, k, count, res);
+    }
+    int kthSmallest(TreeNode* root, int k) {
+        int count = 0, res = 0;
+        inorder(root, k, count, res);
+        return res;
+    }
+};
+
+Approach 3: Using Iterative Traversal for Inorder.  T.C -> O(n), S.C -> O(n)
+
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        stack<TreeNode*> stack;
+        TreeNode* node = root;
+        int cnt = 0; 
+        while(true){
+            if(node != NULL){
+                stack.push(node);
+                node = node->left;
+            }
+            else{
+                if(stack.empty()){
+                    break;
+                }
+                node = stack.top(); 
+                stack.pop(); 
+                cnt++; 
+                if(cnt == k) return node->val; 
+                node = node->right;
+            }
+        }
+        return -1; 
+    }
+};
+
+Approach 4: Using Morris Traversal for Inorder. T.C -> O(n), S.C -> O(1)
+
+class Solution {
+public:
+    
+    int kthSmallest(TreeNode* root, int k) {
+        // vector<int> inorder;
+        TreeNode* curr = root;
+        int count = 0, ans = -1;
+        
+        while(curr != nullptr) {
+            if(curr->left == nullptr) {
+                count++;
+                if(count == k) 
+                    ans = curr->val;
+                curr = curr->right;
+            }
+            
+            else {
+                TreeNode* prev = curr->left;
+                
+                // Make a threaded connection before moving left.
+                // Move to the rightmost guy on the left subtree
+                while(prev->right && prev->right != curr) {
+                    prev = prev->right;
+                }
+                
+                // Make the threaded connection and move curr to left.
+                if(prev->right == nullptr) {
+                    prev->right = curr;
+                    curr = curr->left;
+                }
+                
+                // If threaded connection already there, remove it and move right
+                else {
+                    prev->right = nullptr;
+                    // inorder.push_back(curr->val);
+                    count++;
+                    if(count == k)
+                        ans = curr->val;
+                    
+                    curr = curr->right;
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
+*/
+
+
+Kth largest element
+
+Do one traversal and count the number of Nodes N.
+Kth largest element---> (N-kth) smallest OR reverse INORDER

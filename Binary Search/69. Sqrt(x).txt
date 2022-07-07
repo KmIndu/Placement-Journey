@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int mySqrt(int x) {
+        
+        long long low = 0, high = x, ans, mid;     //long long due to some of test cases overflows integer limit.
+        
+        while(low<=high){             
+            mid=(low+high)/2;
+            if(mid*mid==x) return mid;     //if the 'mid' value ever gives the result, we simply return it.
+            else if(mid*mid<x){             
+                low=mid+1;        //if 'mid' value encounterted gives lower result, we simply discard all the values lower than mid.
+                ans=mid;        //an extra pointer 'ans' is maintained to keep track of only lowest 'mid' value. 
+            }
+            else high=mid-1;       //if 'mid' value encountered gives greater result, we simply discard all the values greater than mid. 
+        }
+        return ans;   
+    }
+};

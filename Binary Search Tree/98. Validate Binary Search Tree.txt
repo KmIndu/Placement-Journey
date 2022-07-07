@@ -1,0 +1,22 @@
+Obviously, STRIVER:
+https://www.youtube.com/watch?v=f-sj7I5oXEI
+
+class Solution {
+public:
+    bool helper(TreeNode* root, long left, long right)
+    {
+        if(root==NULL) return true;
+        
+        if(root->val > left && root->val < right)
+            return helper(root->left, left, root->val) && helper(root->right, root->val, right);  
+        
+        return false;
+    }
+    
+    bool isValidBST(TreeNode* root) 
+    {
+        if(root==NULL) return true;
+        
+        return helper(root, LONG_MIN, LONG_MAX);
+    }    
+};

@@ -1,0 +1,62 @@
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+ // } Driver Code Ends
+class Solution
+{
+    public:
+        int binarysearch(vector<vector<int>> Mat, int r )
+        {
+            int low=0, high=Mat[0].size()-1;
+            int fi1=Mat[0].size();
+            while(low<=high)
+            {
+                int mid=(low+(high-low)/2);
+                if(Mat[r][mid]==1)
+                {
+                    fi1=mid;
+                    high=mid-1;
+                }
+                else
+                {
+                    low=mid+1;
+                }
+            }
+            int count=Mat[0].size()-fi1;
+            return count;
+        }
+        
+        int maxOnes (vector <vector <int>> &Mat, int N, int M)
+        {
+            int cmax=0;
+            int r;
+            
+            for(int i=0; i<N; i++)
+            {
+                int coir= binarysearch(Mat,i ); //count of 1 in ith row
+                if(coir>cmax)
+                {
+                    cmax=coir;
+                    r=i;
+                }
+            }
+            return r;
+        }
+};
+
+// { Driver Code Starts.
+
+int main(){
+    int t; cin >> t;
+    while (t--){
+        int n, m; cin >> n >> m;
+        vector <vector <int>> arr (n, vector <int> (m));
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                cin >> arr[i][j];
+        Solution ob;        
+        cout << ob.maxOnes(arr, n, m) << endl;
+    }
+}  // } Driver Code Ends
