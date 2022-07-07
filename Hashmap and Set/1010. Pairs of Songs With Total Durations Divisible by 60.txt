@@ -1,0 +1,74 @@
+kaafi sahi explain kre ye-
+https://www.youtube.com/watch?v=5gHnQ4lfDko&ab_channel=NareshGupta
+
+explaination inka hai hashmap ka code khud leetcode se samajh kr kia..
+
+Approach 1 - Brute Force 
+Status  - Time Limit Exceeded
+
+class Solution {
+public:
+    int numPairsDivisibleBy60(vector<int>& time) {
+        int pair=0;
+        for(int i=0; i<time.size(); i++)
+        {
+            for(int j=i+1; j<time.size(); j++)
+            {
+                if((time[i]+time[j])%60==0)
+                {
+                    pair++;
+                }
+            }
+        }
+        return pair;
+    }
+};
+
+
+Approach 2- Hashmap 
+
+map<int, int> map
+first int represents time duration %60
+second int represents number of such song
+
+Suppose we have input as [30, 20  150, 100, 40].
+The total pairs we can form are (30, 150), (20, 100), (20, 40).
+means answer is 3.
+
+Intuitive Explanation :
+
+Initially, do t=t%60
+Since none of these values are 60, I'm going to do 60 - t.
+
+So when we see 30, we are looking for 30 % 60 = 30 and 60-30=30. We haven't seen another 30 yet, so we will not increment counter (or rather we will, by 0). In our map, we will put 30 : 1. 
+What does this means? This means that the remainder 30 is available for use, and the next number that uses it, will be able to create 1 pair with it.
+
+The next number is 20. So when we see 20, we are looking for 20 % 60 = 20 and 60-20=40. We haven't seen  40 yet, so we will not increment counter. In our map, we will put 20 : 1. 
+What does this means? This means that the remainder 20 is available for use, and the next number that uses it, will be able to create 1 pair with it.
+
+The next number is 150, and we are looking for 150 % 60 = 30 and 60-30=30. We see 30 in our map, so we increment counter by whatever value lives in map[30]. 
+In this case, we increment by map[30] = 1. What this signifies is that we have made a pair between 30 and 150, or in other words, 30 was used to create exactly 1 pair.
+Now, we will update map[150 % 60] = map[30] by 1, making our map contain 30 : 2. What this means is that the next item that requires 30, will be able to make two pairs, one with 30, and one with 150.
+
+The next number is 100, and we are looking for 100 % 60 = 40 and 60-40=20. We see 20 in our map, so we increment counter by whatever value lives in map[20]. 
+In this case, we increment by map[20] = 1. What this signifies is that we have made a pair between 20 and 100, or in other words, 20 was used to create exactly 1 pair.
+ Now, we will update map[100 % 60] = map[40] by 1, making our map contain 40 : 2. What this means is that the next item that requires 40, will be able to make two pairs, one with 20, and one with 100.
+
+Finally, we go to 40, and we are looking for 40 % 60 = 40 and 60-40=20. We see map[20] = 2, and so we increment counter by 2, giving counter a total value of 3. Why did we do 2? Remember that when map[30] = 2, it means that there is already a pair such that (30, X) are divisible by 60. If you need to use 30 again, then you will be able to create 2 additional pairs. When we see 90, we can now form two pairs: (30, 90) and (90, X). In this case, X is 150.
+Till this step answer is total 3-pairs.
+
+
+class Solution {
+public:
+    int numPairsDivisibleBy60(vector<int>& time) {
+        unordered_map<int, int> umap;
+        int pair=0;
+        for(int i=0; i<time.size(); i++)
+        {
+            time[i]=time[i]%60;
+            pair+= time[i]==0 ?umap[0]:umap[60 - time[i]];
+            umap[time[i]]++;
+        }
+        return pair;
+    }
+};

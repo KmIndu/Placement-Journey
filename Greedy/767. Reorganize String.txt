@@ -1,0 +1,79 @@
+Explained by Ayushi dii...
+https://www.youtube.com/watch?v=sSDAN_WwNwU
+
+Rearrange characters in a string such that no two adjacent are same 
+
+
+
+1. Character with maximum occurence is placed at alternate(even) positions and rest are place at odd position.
+     For example-
+     a a a b c
+
+      a b a c a
+      0 1 2 3 4
+
+2. Let's take an another example.
+     b b b a a c c d d e
+
+     b-3
+     a-2
+     c-2
+     d-2
+     e-1
+
+     b c b c b d a d a e
+     0 1 2 3 4 5 6 7 8 9
+
+3. a a a a b c 
+
+    a a a     a  
+    0 1 2 3 4 5
+    
+   For Handling this case-
+   Maximum Frequency Character >  (Length of string+1)/2
+   4>(6+1)/2  
+   4>7/2
+   4>3,  which is not true.
+    
+   return "".
+
+
+
+
+
+
+class Solution {
+public:
+    string reorganizeString(string s) {
+        unordered_map<char,int>mp;
+        for(int i=0;i<s.length();i++){
+            mp[s[i]]++;
+        }
+        int max_count=0, max_ele=-1; 
+        for (auto i:mp) { 
+             if (max_count<i.second) { 
+                 max_ele=i.first; 
+                 max_count=i.second; 
+             } 
+         }
+         if(max_count>(s.length()+1)/2){
+            return "";
+         }
+        int i = 0;
+        while(mp[max_ele]>0){
+            s[i] = max_ele;
+            i+=2;
+            mp[max_ele]--;
+        }
+        for(auto ele:mp){
+            while(ele.second > 0){
+                if(i>=s.size()) 
+                    i=1;
+                s[i] = ele.first;
+                ele.second--;
+                i+=2;
+            }
+        }
+        return s;
+        }
+};

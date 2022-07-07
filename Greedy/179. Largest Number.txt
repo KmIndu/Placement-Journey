@@ -1,0 +1,20 @@
+Largest Number formed from an array
+
+class Solution {
+public:
+     static bool compare(int n1, int n2){
+         string num1 = to_string(n1); 
+         string num2 = to_string(n2);
+         return num1 + num2 > num2 + num1;
+    }
+    string largestNumber(vector<int>& nums) {
+        int n=nums.size();
+        sort(nums.begin(), nums.end(), compare);
+        string ans = "";
+        for(int i=0;i<n;i++){
+            ans += to_string(nums[i]);
+        }
+        if(ans[0]=='0') return "0";
+        return ans;
+    }
+};

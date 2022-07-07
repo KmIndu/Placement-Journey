@@ -1,0 +1,54 @@
+https://www.youtube.com/watch?v=QAqfQwJH2w4
+
+
+Theorem: In a triangle, the length of any side is less than the sum of the other two sides.
+                 Suppose we have a triangle of sides a, b and c. Then, a<b+c   b<a+c   c<a+b
+
+Brute-Force solution:
+it gives TLE
+
+class Solution {
+public:
+// If the sum of any two side lengths is greater than the third in every combination
+    int triangleNumber(vector<int>& a) {
+        sort(a.begin(), a.end());
+        int ans=0, n = a.size();
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                    for(int k=j+1; k<n; k++){
+                        if(a[i]+a[j]>a[k]){
+                            // cout<<a[i]<<" "<<a[j]<<" "<<a[k]<<"  ";
+                             ans++;
+                        }
+                        else    break;
+                    }
+            }
+        }
+        return ans;
+    }
+};
+
+
+Two pointer||Binary Search Approach
+
+class Solution {
+public:
+    int triangleNumber(vector<int>& nums) {
+        int ans = 0, n = nums.size();
+        sort(nums.begin(), nums.end());
+        
+        for(int i = n - 1; i >= 2; i--){  
+            int lo = 0, hi = i - 1;
+            while(lo < hi){
+                if(nums[lo] + nums[hi] > nums[i]){
+                    ans += (hi - lo);
+                    hi--;
+                }else{
+                    lo++;
+                }
+            }
+            
+        }        
+        return ans;
+    }
+};

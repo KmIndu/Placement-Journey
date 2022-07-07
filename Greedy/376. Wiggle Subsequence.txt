@@ -1,0 +1,98 @@
+https://www.youtube.com/watch?v=6NEKjEPoCCA
+Leetcode #376 Wiggle Subsequence Greedy Algorithm
+
+Solution - I (Greedy Approach)
+
+Time complexity: O(n)
+Space complexity: O(1)
+
+Let's understand this approch with the help of an example.
+
+nums = [1, 7, 2, 9, 6, 4, 1, 12, 12, 8]
+0 1 2 3 4 5 6 7 8 9
+
+Start by initializing prev_diff to nums[1]-nums[0] . Here, 7-1 = 6.
+Also, declare variable count which 'counts the length of the wiggle sequence'.
+In the above example, we have 1 and 7 so count is 2, initially.
+count would have been 2 in other cases also. Suppose, we have first number as 10 and second number as 3 , then also it would be a wiggle sequence, a decreasing wiggle sequence.
+Suppose, we have a block with both numbers as same, 10 and 10 then count would have been 1 initially because this is not a wiggle sequence. We can remove one 10, making our count as only 1.
+Please note: A sequence with fewer than two elements is trivially a wiggle sequence. Thats why we are doing: if(nums.size()==1) return 1;
+Next, we have, i= 2, nums[2]-nums[1]=2-7=-5. Declared a variable curr_diff and stored -5 to it.
+Why do we need curr_diff and prev_diff? See, after an increasing block, only a decreasing block can fit and viceversa. Here, my curr_diff is -5 and my prev_diff is 6, that means, previously I had an increasing block(6) and now I have decreasing block(-5) so I will increment the count from 2 to 3. Also, before going to next iteration, I will change my prev_diff to -5.
+In next iteration, we have i =3 , which means, nums[3]-nums[2] = 9-2 = 7. We make curr_diff as 7. curr_diff is a positive difference and pre_diff is -5 which is a negative difference, that means, previously we had an increasing block and now we have a decreasing block. Since, curr_diff and prev_diff are of opposite sign so we increment count to 4. Also, before going to next iteration, I will change my prev_diff to 7.
+In next iteration we have i=4, which means, nums[4]-nums[3] = 6-9 = -3. We make curr_diff as -3. curr_diff is a negative and pre_diff is 7 which is a positive, that means, previously we had a decreasing block and now we have an increasing block. Since, curr_diff and prev_diff are of opposite sign so we increment count to 5. Also, before going to next iteration, I will change my prev_diff to -3.
+In next iteration we have i=5, which means, nums[5]-nums[4] = 4-6 = -2. We make curr_diff as -2. curr_diff is negative and pre_diff is -3 which is also negative. Now this is a really interesting case. Why interesting? coz we have to just IGNORE(something that everyone loves doing!). So, neither we will increment our count, nor we will change our prev_diff. The only thing we will do is just go to NEXT ITERATION.
+In next iteration we have i=6, which means, nums[6]-nums[5] = 1-4 = -3. We have curr_diff as -3. curr_diff is negative and pre_diff is -3 which is also negative. Again the similar signs! Just IGNORE...neither we will increment count, norwe will change prev_diff. The only thing we will do is just go to NEXT ITERATION.
+In next iteration we have i=7, which means, nums[7]-nums[6] = 12-1 = 11. We have curr_diff as 11. curr_diff is positive and pre_diff is -3 which is negative. NOW, our wait is over. Previously we had a decreasing block and now we have an increasing block. Since, curr_diff and prev_diff are of opposite sign so we increment count to 6. Also, before going to next iteration, I will change my prev_diff to 11.
+In next iteration we have i=8, which means, nums[8]-nums[7] = 12-12 = 0 We have curr_diff as 0. pre_diff is 11 which is positive. Does this point add something to our wiggle length? A big No. So we will IGNORE this too and go to next iteration.
+In next iteration we have i=8, which means, nums[9]-nums[8] = 8-12 = -4. We have curr_diff as -4. pre_diff is 11 which is positive. that means, previously we had a decreasing block and now we have an increasing block. Since, curr_diff and prev_diff are of opposite sign so we increment count to 7 and change our prev_diff to -4.
+Now we have ended our iterations and got count as 7 which is maximum length of our wiggle sequence.
+Code for the greedy approach is here,
+
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        if(nums.size()==1)
+            return 1;
+        
+        int prev_diff=nums[1]-nums[0]; 
+        
+        int count;
+        if(prev_diff==0)
+            count=1;
+        else
+            count=2;
+        
+        for(int i=2; i<nums.size(); i++)
+        {
+            int curr_diff=nums[i]-nums[i-1];
+            if((curr_diff>0 && prev_diff<=0) || (curr_diff<0 && prev_diff>=0))
+            {
+                count++;
+                prev_diff=curr_diff;
+            }
+        }
+        return count;
+    }
+};
+
+
+https://www.youtube.com/watch?v=D8m8eWP8w4E.
+Leetcode #376 Wiggle Subsequence Dynamic Programming 
+
+Solution - II (Dynamic Programming Approach)
+
+Time complexity: O(n)
+Space complexity: O(1)
+
+Following cases can be possible : -
+
+nums[i] > nums[i-1] => dec=1+inc
+nums[i] < nums[i-1] => inc =1+dec
+nums[i] = nums[i-1] => do nothing and just iterate to the next element
+
+Code for the DP approach is here,
+
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+    
+        if(nums.size()<2)
+            return 1;
+        
+        int inc=1, dec=1;
+        for(int i=1; i<nums.size(); i++)
+        {
+            if(nums[i]>nums[i-1])
+            {
+                dec=1+inc;
+            }
+            else if(nums[i]<nums[i-1])
+            {
+                inc=1+dec;
+            }
+            // if nums[i]==nums[i-1], do nothing
+        }
+        return max(inc,dec);
+    }
+};

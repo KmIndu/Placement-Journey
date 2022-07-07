@@ -1,0 +1,47 @@
+GREEDY APPROACH
+Code with Alisha-
+https://www.youtube.com/watch?v=wLPdkLM_BWo
+
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int jumps=0;
+        int current=0;
+        int farthest=0;
+        
+        for(int i=0; i<nums.size()-1; i++)
+        {
+            farthest=max(farthest, nums[i]+i);
+            if(i==current)
+            {
+                current=farthest;
+                jumps++;
+            }
+        }
+        return jumps;
+    }
+};
+
+DP APPROACH
+Pepcoding-
+https://www.youtube.com/watch?v=phgjL7SbsWs
+
+index                                              0  1  2  3  4  5  6  7  8  9
+maximum jump length at that position               3  3  0  2  1  2  4  2  0  0
+possibe jumps to reach to end from that position   4  4  n  3  3  2  1  1  n  0
+                                                                        
+                                           6 - 4 - 1          9 - 0 - 0
+                                       ->                 ->  
+                                           0 - 3 - 5 - 6      0 - 3 - 5 - 6 - 9
+0 - 3 - 4     3 - 2 - 3      5 - 2 - 2     
+          ->             ->                                                              
+0             0 - 3          0 - 3 - 5
+                                           7 - 2 - 1          9 - 0 - 0
+                                       ->                 -> 
+                                           0 - 3 - 5 - 7      0 - 3 - 5 - 7 - 9
+
+Total jumps = 4  
+1. 0 - 3
+2. 3 - 5
+3. 5 - 6  or  5 - 7
+5. 6 - 9  or  7 - 9 

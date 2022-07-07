@@ -1,0 +1,9 @@
+vector<int> vis(v+1, 0);
+
+for(i=0; i<V; i++)
+{
+    if(!vis[i])
+    {
+        dfs or bfs
+    }
+}

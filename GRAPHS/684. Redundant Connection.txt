@@ -1,0 +1,56 @@
+STRIVER's video is enough for this concept of Disjoint Set | Union By Rank and Path Compression.
+
+https://www.youtube.com/watch?v=3gbO7FDYNFQ&list=PLgUwDviBIf0rGEWe64KWas0Nryn7SCRWw&index=23
+
+class Solution {
+public:
+    int rank[1001];
+    int parent[1001];
+    
+    int findPar(int u) {
+        if(u == parent[u]) return u; 
+        return parent[u] = findPar(parent[u]); 
+    }
+
+    void unionn(int u, int v) {
+        u = findPar(u);
+        v = findPar(v);
+        if(rank[u] < rank[v]) {
+            parent[u] = v;
+        }
+        else if(rank[v] < rank[u]) {
+            parent[v] = u; 
+        }
+        else {
+            parent[v] = u;
+    	    rank[u]++; 
+        }
+    }
+    
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n=edges.size();
+     
+	    for(int i = 0;i<n;i++) 
+            parent[i] = i; 
+        
+        vector<int> res;
+        
+        for(int i=0;i<n;i++){
+            int u=edges[i][0];
+            int v=edges[i][1];
+            if(findPar(u)==findPar(v))
+            {
+                res.push_back(u);
+                res.push_back(v);
+                break;
+            }
+            else
+                unionn(u, v);
+        }
+        return res;   
+    }
+};
+
+
+
+
