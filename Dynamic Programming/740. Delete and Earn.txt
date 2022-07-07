@@ -1,0 +1,89 @@
+Video link of Ayushi dii:
+https://www.youtube.com/watch?v=m6PQdfyc9DQ&list=PLPyD8bF-abztrIEDvPFebTVxUO9tWiVjJ&index=5
+
+Discussion section se help wali link:
+https://leetcode.com/problems/delete-and-earn/discuss/1820717/DITTO-AS-HOUSE-ROBBER-or-MemoBottom-Up-or-ELEGANT-O(N)-or-EXPLAINED
+
+
+PRE-REQUISITE :- This Question -> House Robber
+
+Idea : This Question is Exactly same as House Robber. The thing to note here is if we choose A[i],
+       we have to delete `A[i] + 1` && `A[i] - 1`.. This Simply means we can't choose the adjacent element 
+       which refers to house robber where we couldn't choose the adjacent elements.
+       Last, just one more thing we have repeated elements here. So we need to build the `arr` wrt that array nums.
+
+
+
+DP - SOLUTION [Memoization/ Top-Down]
+
+Time Complexity :O(N), Where N (~10^4) : size of input array / maxElement / maxSize
+Space Complexity : O(N), ignoring recursion stack
+
+class Solution {
+public:
+    int helper(int ind, vector<int>& arr, vector<int>& dp)
+    {
+        if(ind==0) return arr[ind];
+        if(ind<0)  return 0;
+        
+        if(dp[ind]!=-1) return dp[ind];
+        
+        int pick= arr[ind]+ helper(ind-2, arr,dp);
+        int nonPick = 0 + helper(ind-1, arr, dp);
+    
+        return dp[ind]=max(pick, nonPick);
+    }
+    
+    int deleteAndEarn(vector<int>& nums) {
+        int n=nums.size();
+        
+        int m=1e4+1;
+        vector<int> arr(m, 0);
+        
+        // Just these two line makes this question different from House Rob
+        for(int i=0; i<n; i++) 
+            arr[nums[i]] += nums[i];     
+        
+        vector<int> dp(m, -1);
+        
+        return helper(m-1, arr, dp); 
+    }
+};
+
+
+DP - SOLUTION [Bottom-Up] 
+
+Time Complexity :O(N), Where N (~10^4) : size of input array / maxElement / maxSize
+Space Complexity : O(N)
+
+class Solution {
+public:
+    int helper(int n, vector<int>& arr, vector<int>& dp)
+    {
+        dp[0]= arr[0];
+        
+        for(int i=1 ;i<n; i++){
+             int pick = arr[i];
+             if(i>1)
+                 pick += dp[i-2];
+             int nonPick = 0+ dp[i-1];
+        
+             dp[i]= max(pick, nonPick);
+        }
+        return dp[n-1];
+    }
+    
+    int deleteAndEarn(vector<int>& nums) {
+        int n=nums.size();
+        
+        int m=1e4+1;
+        vector<int> arr(m, 0);
+        
+        for(int i=0; i<n; i++) 
+            arr[nums[i]] += nums[i];
+        
+        vector<int> dp(m);
+        
+        return helper(m, arr, dp);
+    }
+};

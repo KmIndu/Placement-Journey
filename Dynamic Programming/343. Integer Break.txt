@@ -1,0 +1,85 @@
+Method 1: RECURSION
+
+class Solution {
+public:
+    int recursion(int n, int cur)
+    {
+        // base
+        if (n == 0 || cur == 0) {
+            return 1;
+        }
+        // recurisve
+        if (cur > n) {
+            return recursion(n - 0, cur - 1);
+        }
+        else {
+            return max(recursion(n - 0, cur - 1), cur * recursion(n - cur, cur));
+        }
+    }
+    
+    int integerBreak(int n) 
+    {
+        return recursion(n, n - 1);    
+    }
+};
+
+Method 2: DP MEMOIZATION
+
+class Solution {
+public:
+    int dp[58 + 1][57 + 1];
+    
+    int recursion(int n, int cur)
+    {    
+        if (n == 0 || cur == 0)
+            return 1;
+        if (dp[n][cur] != -1)
+            return dp[n][cur];
+        if (cur > n)
+            return dp[n][cur] = recursion(n - 0, cur - 1);
+        else
+            return dp[n][cur] = max(recursion(n - 0, cur - 1), cur * recursion(n - cur, cur));
+    }
+    
+    int integerBreak(int n) 
+    {
+        memset(dp, -1, sizeof(dp));
+        return recursion(n, n - 1);    
+    }
+};
+Method 3: DP TABULATION
+
+class Solution {
+public:
+    int dp[58 + 1][57 + 1];
+    
+    int recursion(int n, int cur)
+    {
+        for (int i = 0; i < n + 1; i++) {
+            for (int j = 0; j < cur + 1; j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 1;
+                }
+            }
+        }
+        
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < cur + 1; j++) {
+                if (i < j) {
+                    dp[i][j] = dp[i][j - 1];
+                }
+                else {
+                    dp[i][j] = max(dp[i][j - 1], j * dp[i - j][j]);
+                }
+            }
+        }
+        
+        return dp[n][cur];
+    }
+    
+    int integerBreak(int n) 
+    {
+        memset(dp, -1, sizeof(dp));
+        return recursion(n, n - 1);    
+    }
+};

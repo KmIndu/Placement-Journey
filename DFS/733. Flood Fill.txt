@@ -1,0 +1,32 @@
+https://www.youtube.com/watch?v=hVFFWpSRY4o
+
+class Solution {
+public:
+    void dfs(int i, int j, int initialColor, int newColor, vector<vector<int>>& image)
+    {
+        int m=image.size();
+        int n=image[0].size();
+        
+		// Check boundary conditions
+        if(i<0||j<0) return;
+        if(i>=m||j>=n) return;
+        if(image[i][j]!=initialColor) return;
+        
+        
+		// Change the color
+        image[i][j]=newColor ;
+        
+		// Recursive calls for all the 4 directions
+        dfs(i-1, j, initialColor, newColor, image);    // Top
+        dfs(i+1, j, initialColor, newColor, image);   // Bottom
+        dfs(i, j-1, initialColor, newColor, image);   // Left
+        dfs(i, j+1, initialColor, newColor, image);    // Right
+    }
+    
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        int initialColor=image[sr][sc];
+        if(initialColor!=newColor)
+            dfs(sr, sc, initialColor, newColor, image);
+        return image;
+    }
+};

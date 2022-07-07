@@ -1,0 +1,88 @@
+wow , really  a very nice explaination by Alisha di!
+
+https://www.youtube.com/watch?v=lJvsjam1guY&list=PLLT4EuYB4kIb5er32BqvSqnFFxJ0Ciqf7&index=12
+
+class Solution {
+public:
+    bool checkvalid(int i,int j, int rows, int cols)
+    {
+        if(i<0 || i>=rows || j<0 || j>=cols) return false;
+        return true;
+    }
+    
+    void dfs(int &id, int &area, vector<vector<int>> &grid, int i, int j, int rows, int cols)
+    {
+        if(i<0 || i>=rows || j<0 || j>=cols || grid[i][j]!=1)  //Boundary case for matrix
+            return;
+        
+        area++;
+        grid[i][j]=id;
+            
+        //Make recursive call in all 4 adjacent directions
+        dfs(id, area, grid, i+1, j, rows, cols);  //DOWN
+        dfs(id, area, grid, i, j+1, rows, cols);  //RIGHT
+        dfs(id, area, grid, i-1, j, rows, cols);  //TOP
+        dfs(id, area, grid, i, j-1, rows, cols);  //LEFT  
+    }
+    
+    int largestIsland(vector<vector<int>>& grid) {
+        int rows=grid.size();
+        int cols=grid[0].size();
+        unordered_map<int, int> mymap;
+        int id=2;
+        
+        for(int i=0;i<rows; i++)
+        {
+            for(int j=0;j<cols; j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    int area=0;
+                    dfs(id, area, grid, i, j, rows, cols);
+                    mymap[id]=area;
+                    id++;
+                }
+            }
+        }
+        
+        int result=0;
+        for(int i=0;i<rows; i++)
+        {
+            for(int j=0;j<cols; j++)
+            {
+                if(grid[i][j]==0)
+                {
+                    set<int>s;
+                    int sum=0;
+                    if(checkvalid(i+1, j, rows, cols) && grid[i+1][j]>1 && s.find(grid[i+1][j])==s.end())
+                    {
+                        s.insert(grid[i+1][j]);
+                        auto it =mymap.find(grid[i+1][j]);
+                        sum+=it->second;
+                            
+                    }
+                    if(checkvalid(i-1, j, rows, cols) && grid[i-1][j]>1 && s.find(grid[i-1][j])==s.end())
+                    {
+                        s.insert(grid[i-1][j]);
+                        auto it =mymap.find(grid[i-1][j]);
+                        sum+=it->second;
+                    }
+                    if(checkvalid(i, j+1, rows, cols) && grid[i][j+1]>1 && s.find(grid[i][j+1])==s.end())
+                    {
+                        s.insert(grid[i][j+1]);
+                        auto it =mymap.find(grid[i][j+1]);
+                        sum+=it->second;
+                    }
+                    if(checkvalid(i, j-1, rows, cols) && grid[i][j-1]>1 && s.find(grid[i][j-1])==s.end())
+                    {
+                        s.insert(grid[i][j-1]);
+                        auto it =mymap.find(grid[i][j-1]);
+                        sum+=it->second;
+                    }
+                    result = max(result, sum+1);
+                }          
+            }
+        }
+        return result==0?(rows*cols):result;  
+    }
+};

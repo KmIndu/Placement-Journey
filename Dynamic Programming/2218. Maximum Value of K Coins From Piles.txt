@@ -1,0 +1,38 @@
+https://www.youtube.com/watch?v=WvCAn1y9s1Q&t=244s
+
+class Solution {
+public:
+    int solve (vector<vector<int>> &piles, int i, int k, vector<vector<int>> &dp)
+    {
+        if(i>=piles.size())
+            return 0;
+        
+        if (dp[i][k] != -1)
+            return dp[i][k];
+        
+        int res=0;
+        res=max(res,solve(piles, i+1, k, dp));
+        
+        for(int j=0; j<piles[i].size()&&j+1<=k; j++)
+        {
+            res=max(res, piles[i][j]+solve(piles, i+1, k-j-1, dp));
+        }
+        return dp[i][k]=res;     
+    }
+    
+    int maxValueOfCoins(vector<vector<int>>& piles, int k) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        for(int i=0; i<piles.size(); i++)
+        {
+            for(int j=1; j<piles[i].size(); j++)
+            {
+                piles[i][j]=piles[i][j]+piles[i][j-1];
+            }
+        }
+        int n=piles.size();
+        vector<vector<int>> dp (n+1, vector<int> (k+1, -1));
+        return solve(piles, 0, k, dp);
+    }
+};

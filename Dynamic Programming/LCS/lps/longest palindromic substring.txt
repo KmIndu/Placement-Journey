@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int lcs(string S1, string S2, int x, int y);
+
+int lps(string S1, int x)
+{
+    string S2=S1;
+    reverse(S2.begin(), S2.end());
+    int y=S2.length();
+    int len = lcs(S1, S2, x, y);
+    return len;
+}
+
+int lcs(string S1, string S2, int x, int y)
+{
+    int t[x+1][y+1];
+    int result=0;
+    for(int i=0; i<x+1; i++)
+    {
+        for(int j=0; j<y+1; j++)
+        {
+            if(i==0||j==0)
+              t[i][j]=0;
+        }
+    }
+    for(int i=1; i<x+1; i++)
+    {
+        for(int j=1; j<y+1; j++)
+        {
+            if(S1[i-1]==S2[j-1])
+            {
+                t[i][j]=1+t[i-1][j-1];
+                result=max(result, t[i][j]);
+            }
+            else if(S1[i-1]!=S2[j-1])
+            {
+                t[i][j]=0;
+            }
+        }
+    }
+    return result;
+}
+
+int main()
+{
+    string S1;
+    cin>>S1;
+    int x=S1.length();
+   
+    
+    cout<<lps(S1, x);
+    
+    return 0;
+}

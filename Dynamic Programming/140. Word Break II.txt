@@ -1,0 +1,36 @@
+https://www.youtube.com/watch?v=LmHWIsBQBU4&t=312s
+
+class Solution {
+public:
+    vector<string> res;
+    
+    void wb(string &s,string str, unordered_set<string> &us)
+    {
+        if(s.length()==0)
+        {
+            str.pop_back();//backtracking
+            res.push_back(str);
+            return;
+        }
+        for(int i=0;i<s.length();i++)
+        {
+            string left=s.substr(0,i+1);
+            if(us.find(left)!=us.end()) 
+            {
+                string right=s.substr(i+1);
+                wb(right, str+left+" ", us);
+            }
+                
+        }
+    }
+    
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> us; //put dictionary in a hashset for quick lookup
+        for(int i=0;i<wordDict.size();i++)
+        {
+            us.insert(wordDict[i]);
+        }
+		wb(s,"",us);
+        return res;
+    }
+};

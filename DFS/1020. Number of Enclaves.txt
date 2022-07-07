@@ -1,0 +1,44 @@
+Similar to Number of Closed Islands.
+Just 1 variation and you are done dana done.
+
+class Solution {
+public:
+    void dfs(int i, int j, vector<vector<int>>& grid)
+    {
+        if(i<0 || i>=grid.size() || j<0 || j>=grid[0].size() || grid[i][j]!=1)
+            return;
+        
+        grid[i][j]=0;
+        
+        dfs(i+1, j, grid);
+        dfs(i-1, j, grid);
+        dfs(i, j+1, grid);
+        dfs(i, j-1, grid);
+    }
+    
+    int numEnclaves(vector<vector<int>>& grid) {
+        int count=0;
+        
+        for(int i=0; i<grid.size(); i++)                    // first and last column
+            dfs(i, 0, grid), dfs(i, grid[0].size()-1, grid);
+        
+        for(int j=0; j<grid[0].size(); j++)
+            dfs(0, j, grid), dfs(grid.size()-1, j, grid);     // first and last row
+        
+         
+        // after removing the border connected cases 
+        // the no of times we ran dfs will give us no of  discounted lands
+        for(int i=0; i<grid.size(); i++)
+        {
+            for(int j=0; j<grid[0].size(); j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    //dfs(i, j, grid);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+};

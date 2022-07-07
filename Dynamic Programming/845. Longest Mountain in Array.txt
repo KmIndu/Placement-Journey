@@ -1,0 +1,46 @@
+https://www.youtube.com/watch?v=VXeukMTbxkw
+
+class Solution {
+public:
+    int longestMountain(vector<int>& arr) {
+       
+       ios_base::sync_with_stdio(false);
+       cin.tie(NULL);
+        
+       int n=arr.size();
+    
+       // if size < 3 than mounatin cannot be formed 
+       if(n<3)
+           return 0;
+        
+       int ans=0;
+        
+       for(int i=1; i<n-1;)
+       {
+           // checking the peak
+           if(arr[i-1]<arr[i] && arr[i]>arr[i+1])  
+           {
+               int count=1;
+               int j=i;
+               //counting the element less than peak
+               while(j>0 && arr[j-1]<arr[j])
+               {
+                   count++;
+                   j--;
+               }
+               //counting the element greater than peak
+               while(i<n-1 && arr[i]>arr[i+1])
+               {
+                   count++;
+                   i++;
+               } 
+               ans=max(ans, count);
+           }
+           else
+           {
+               i++;
+           }
+       }
+       return ans;
+    }
+};

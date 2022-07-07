@@ -1,0 +1,34 @@
+Video link:
+https://www.youtube.com/watch?v=SrP-PiLSYC0&list=PLgUwDviBIf0qUlt5H_kiKYaNSqJ81PMMY&index=12
+
+Pdf link:
+https://takeuforward.org/data-structure/minimum-path-sum-in-triangular-grid-dp-11/
+
+Memoization:
+
+class Solution {
+public:
+    int minimumPathSumUtil(int i, int j, vector<vector<int> > &triangle,int n, vector<vector<int> > &dp)
+    {
+        if(i==n-1) 
+            return triangle[i][j];
+        
+        int down = triangle[i][j]+minimumPathSumUtil(i+1,j,triangle,n,dp);
+        int diagonal = triangle[i][j]+minimumPathSumUtil(i+1,j+1,triangle,n,dp);
+  
+        return dp[i][j] = min(down, diagonal);
+   }
+    
+    int minimumTotal(vector<vector<int>>& triangle) 
+    {
+        int n=triangle.size();
+        vector<vector<int>> dp(n,vector<int>(n,-1));
+        return minimumPathSumUtil(0,0,triangle,n,dp);
+    }
+};
+
+Time Complexity: O(N*N)
+Reason: At max, there will be (half of, due to triangle) N*N calls of recursion.
+
+Space Complexity: O(N) + O(N*N)
+Reason: We are using a recursion stack space: O((N), where N is the path length and an external DP Array of size ‘N*N’.

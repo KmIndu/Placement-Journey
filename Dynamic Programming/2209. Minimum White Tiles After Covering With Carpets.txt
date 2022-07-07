@@ -1,0 +1,73 @@
+https://www.youtube.com/watch?v=3lNY7MRewVI
+
+
+class Solution {
+public:
+    int dp[1002][1002];
+    int min(int a, int b)
+    {
+        if(a<b) return a;
+        return b;
+    }
+    
+    int func(string &floor, int numCarpets, int &carpetLen, int i, vector<int> &prefix)
+    {
+        //Base Cases
+        if(i>=floor.size())
+            return 0;
+        if(numCarpets==0)
+            return 0;
+        
+        //Memoization
+        if(dp[i][numCarpets]!=-1)
+            return dp[i][numCarpets];
+        
+        //Check if current tile is black, if it is then skip it
+        if(floor[i]=='0')
+            return dp[i][numCarpets]=func(floor, numCarpets, carpetLen, i+1, prefix);
+        
+        //temp stores the value of index where pointer i should point after the carpet covers white tiles 
+        //sometimes i+len can place you out of scope of prefix array that's why floor.size() is also considered
+        int temp=min(i+carpetLen, floor.size())-1;
+        int white=prefix[temp];
+        if(i!=0) // i==0 is not fit for this condition(no elements before index 0)
+            white-=prefix[i-1]; // this line gives exact number of white tiles in between(covered by carpet)
+        /*Suppose 1 0 1 1 0 1 0 1 is the input floor array and carpetLen =2. Prefix array would be 1 1 2 3 3 4 4 5.
+        Let us suppose  i=2 then 
+        temp=i+carpetLen-1 temp=2+2-1 temp=4-1 temp=3  
+        white=prefix[temp] white=prefix[3] white=3 
+        white=white-prefix[i-1]= white=3-prefix[2-1]= white=3-prefix[1] white=3-1 white=2*/
+        
+        
+        int pick=white+func(floor,numCarpets-1,carpetLen, i+carpetLen, prefix); //when you use a new carpet from the current index
+        int notpick=func(floor,numCarpets,carpetLen, i+1, prefix); //when you dont use a new carpet from the current index
+        
+        return dp[i][numCarpets]=max(pick, notpick); //maximum number of white tiles that can be covered by the carpet
+    }
+    
+    int minimumWhiteTiles(string floor, int numCarpets, int carpetLen) {
+        //for faster i/p o/p
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        memset(dp,-1,sizeof dp);
+        
+        //prefix array is used to store total number of white tiles till current index
+        vector<int>prefix(floor.size()); 
+        if(floor[0]=='1')
+            prefix[0]=1;
+        else
+            prefix[0]=0;
+        
+        for(int i=1; i<floor.size(); i++)
+        {
+            prefix[i]=prefix[i-1]+(floor[i]=='1');
+        }
+        
+        if(prefix[floor.size()-1]==0)
+            return 0;
+        
+        // minimum number of white tiles still visible = total number of white tiles - maximum number of white tiles that can be covered by the carpet
+        return prefix[floor.size()-1]-func(floor, numCarpets, carpetLen, 0, prefix); 
+    }
+};

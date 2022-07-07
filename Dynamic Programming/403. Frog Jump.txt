@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool func(int i,int k,vector<int>&stones, vector<vector<int>> &dp)
+    {
+        if(i>=stones.size()-1)
+            return true;
+        if(dp[i][k]!=-1)
+            return dp[i][k];
+        bool res=false;
+        for(int j=i+1;j<stones.size();j++)
+        {
+            int d=stones[j]-stones[i];
+            if(d>k+1)
+                break;
+            if(d==k || d==k-1 || d==k+1)
+                res=res||func(j,d,stones, dp);
+        }
+        return dp[i][k]=res;
+    }
+    
+    bool canCross(vector<int>& stones) {
+        int n=stones.size();
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        return func(0,0,stones, dp);
+    }
+};

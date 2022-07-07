@@ -1,0 +1,73 @@
+https://www.youtube.com/watch?v=ZmlQ3vgAOMo&ab_channel=takeUforward
+
+/*
+0 1 2 3 4
+a b * c d
+
+0 1 2 3 4 5 6 
+a b d e f c d
+*/
+
+/*
+                            ab*
+                            abdef
+                           /     \                        
+                         ab       ab*
+                         abdef    abde
+                                 /    \
+                               ab      ab*
+                             abde      abd
+                                      /   \
+                                    ab     ab*
+                                   abd     ab
+                                          /
+                                        ab
+                                        ab
+                                        
+                                        
+                    (i-1, j)   (i, j-1)
+*/
+        
+        //* means nothing, 0 character   i--
+        //* means 1 character            still stands at i
+        //* means 2 characters           still stands at i
+        //* means 3 characters           still stands at i
+        // so on...
+
+
+
+class Solution {
+public:
+    bool func(int i, int j, string &s, string &p, vector<vector<int>>&dp)
+    {
+        if(i<0 && j<0) 
+            return true;
+        if(j<0 && i>=0) 
+            return false;
+        if(i<0 && j>=0) 
+        {
+            for(int k=0;k<=j;k++)
+               if(p[k]!='*') return false;
+            return true;
+        }
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        
+         if(s[i]==p[j] || p[j]=='?')
+            return dp[i][j]=func(i-1, j-1, s, p, dp);
+        
+         if(p[j]=='*')
+            return dp[i][j]=func(i-1, j, s, p, dp)|| func(i, j-1, s, p, dp);
+        
+         return dp[i][j]=false;
+    }
+    
+    bool isMatch(string s, string p) {
+        int m=s.size();
+        int n=p.size();
+        
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        
+        return func(m-1, n-1, s, p, dp);  
+    }
+};

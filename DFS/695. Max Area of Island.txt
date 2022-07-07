@@ -1,0 +1,47 @@
+https://www.youtube.com/watch?v=WxOXoWt64JY
+
+class Solution {
+public:
+    void dfs(int &area, vector<vector<int>> &grid, int i, int j, int rows, int cols)
+    {
+        if(i<0 || i>=rows || j<0 || j>=cols || grid[i][j]!=1)  //Boundary case for matrix
+            return;
+        
+        area++;
+        
+        //Mark current cell as visited
+        grid[i][j] = 0;
+        
+        //Make recursive call in all 4 adjacent directions
+        dfs(area, grid, i+1, j, rows, cols);  //DOWN
+        dfs(area, grid, i, j+1, rows, cols);  //RIGHT
+        dfs(area, grid, i-1, j, rows, cols);  //TOP
+        dfs(area, grid, i, j-1, rows, cols);  //LEFT
+    }
+    
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        //For FAST I/O
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        int maxArea=0;
+        
+        int rows = grid.size();
+        int cols = grid[0].size();
+        
+        //Iterate for all cells of the array
+        for(int i=0;i<rows; i++)
+        {
+            for(int j=0;j<cols; j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    int area=0;
+                    dfs(area, grid, i, j, rows, cols);
+                    maxArea=max(maxArea, area);
+                }
+            }
+        }
+        return maxArea;
+    }
+};
