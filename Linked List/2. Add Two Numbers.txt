@@ -1,0 +1,31 @@
+//In the interview, you have to directly jump to the optimal solution. The reason is this problem has only the optimal soution.
+
+//https://www.youtube.com/watch?v=LBVsXSMOIk4&t=14s
+
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode();
+        ListNode* temp = dummy;
+        int carry = 0;
+        while(l1 != NULL || l2 != NULL || carry){
+            int sum = 0;
+            if(l1 != NULL){
+                sum += l1->val;
+                l1 = l1->next;
+            }
+            
+            if(l2 != NULL){
+                sum += l2->val;
+                l2 = l2->next;
+            }
+            
+            sum += carry;
+            carry = sum/10;
+            ListNode* node = new ListNode(sum%10);
+            temp->next = node;
+            temp = temp->next;
+        }
+        return dummy->next;     
+    }
+};

@@ -1,0 +1,82 @@
+https://www.youtube.com/watch?v=4F06B-fYT9M&t=462s
+
+Sorting solution.
+
+class Solution {
+public:
+    // Custom Compare to sort in descending order
+    bool static compare(pair<int,int>&p1,pair<int,int>&p2) {
+        return p1.second > p2.second;
+    }
+    
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        //Setup the hashtable/hashmap to freq of occurrence of values from nums
+        unordered_map<int,int> map;
+        for(auto i : nums) {
+            map[i]++;
+        }
+         // Make pair of Value and its frequency
+        vector<pair<int, int>> v;
+        for(auto i:map) {
+            v.push_back({i.first, i.second});
+        }
+        // Sort in desc order for frequencies
+        sort(v.begin(), v.end(), compare);
+        // Store top k repeating nums in ans
+        vector<int> ans;
+        for(int p=0; p<k; p++) {
+            ans.push_back(v[p].first);
+        }
+        return ans;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        //Setup the hashtable/hashmap to freq of occurrence of values from nums
+        unordered_map<int,int> map;
+        for(auto i : nums) {
+            map[i]++;
+        }
+         // Make pair of Value and its frequency
+        vector<pair<int, int>> v;
+        for(auto i:map) {
+            v.push_back({i.second, i.first});
+        }
+        // Sort in desc order for frequencies
+         sort(v.begin(),v.end(),greater<pair<int,int>>());
+        // Store top k repeating nums in ans
+        vector<int> ans;
+        for(int i=0; i<k; i++) {
+            ans.push_back(v[i].second);
+        }
+        return ans;
+    }
+};
+
+
+Max Heap(Priority Queue) solution.
+
+Time Complexity : O(nlogk)
+Space Complexity : O(k)
+
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        //Setup the hashtable/hashmap to freq of occurrence of values from nums
+        unordered_map<int,int> map;
+        for(auto i : nums){
+            map[i]++;
+        }
+        priority_queue<pair<int,int>> v; // max heap of pair
+        vector<int> res; // result vector
+        for(auto i:map)
+            v.push({i.second,i.first}); // we are storing frequency,element in the max heap.
+        for(int i=0;i<k;++i)// 0 to k will be the k most frequent
+            res.push_back(v.top().second),v.pop(); // store and pop
+        return res; //return the result.
+    }
+};

@@ -1,0 +1,29 @@
+https://www.youtube.com/watch?v=3Nfs7dNlL0k&list=PLPyD8bF-abzuor0yYzO1g7v8y7u6vO-Fe&index=25
+
+TC- O(N)
+SC- O(1)
+
+class Solution {
+    int len = 0;
+    ListNode* headNode;
+public:
+    /* Note that the head is guaranteed to be not null, so it contains at least one node. */
+    Solution(ListNode* head) {
+        headNode = head;
+        ListNode* temp = headNode;
+        while (temp) {
+            len++;
+            temp = temp->next;
+        }
+    }
+    
+    /*Returns a random node's value. */
+    int getRandom() {
+        int rand_index = rand()%len;
+        ListNode* temp = headNode;
+        for (int i=0; i<rand_index; i++) {
+            temp = temp->next;
+        }
+        return temp->val;
+    }
+};

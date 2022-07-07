@@ -1,0 +1,55 @@
+https://www.youtube.com/watch?v=mD7L5l2NmGU
+
+1->2->3->4->5->NULL
+1. Find Middle Node and divide the linked list into two.
+1->2->3  4->5->NULL
+2. Reverse Second Linked list.
+first- 1->2->3  second- 5->4->NULL
+3. Merge two Linked List. (in a special way)
+1->5->2->4->3->NULL
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *current=head;
+        ListNode *previous=NULL;
+        ListNode *next=NULL;
+        while (current != NULL) {
+            next = current->next;
+            current->next = previous;
+            previous = current;
+            current = next;
+        }
+        head = previous;
+        return head;
+    }
+    
+    void reorderList(ListNode* head) {
+        
+        //step 1 - using slow and fast pointer approach to find the mid of the list
+        ListNode* slow=head;
+        ListNode* fast=head;
+        while(fast!=NULL && fast->next!=NULL)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        
+        //step 2 - reverse the second half and split the List into two
+        ListNode* second=reverseList(slow->next); // independent list second
+        slow->next=NULL;
+        ListNode* first=head; // independent list first
+        
+        //step 3 - merging the two list
+        // second list can be shorter when Linked List size is odd
+        while(second)
+        {
+            ListNode* temp1=first->next;
+            ListNode* temp2=second->next;
+            first->next=second;
+            second->next=temp1;
+            first=temp1;
+            second=temp2;
+        }
+    }
+};

@@ -1,0 +1,44 @@
+https://www.youtube.com/watch?v=9VPm6nEbVPA
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        
+        //return head for empty list or list with single node
+        if(head==NULL||head->next==NULL||k==0) 
+            return head;
+        
+        ListNode*cur=head;
+        
+        //initialize counter to find length of list with 1
+        int len=1;  
+        
+        //traverse till the last node of the list
+        while(cur->next!=NULL)
+        {
+            len++;
+            cur=cur->next;
+        }
+        
+        //link the last node with the first node making it a circular list
+        cur->next=head;  
+        
+        //Now, note the fact that after rotating the list in a multiple of its on length, it with result in the original list itself. So, we can do modulo arithmetic on k and reduce the number of k to k modulus length
+        k=k%len;
+        
+        //finding the position of the last node of the resulting list
+        k=len-k;
+        
+        //traversing circular list k number of times
+        while(k--)
+        {
+            cur=cur->next;
+        }
+        
+        //pointing new head and changing it back to linear list
+        head=cur->next;
+        cur->next=NULL;
+
+        return head;
+    }
+};

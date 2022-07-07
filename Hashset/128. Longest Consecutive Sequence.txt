@@ -1,0 +1,72 @@
+Striver- https://www.youtube.com/watch?v=qgizvmgeyUM
+
+✔️Solution - I (Sorting)
+
+We can simply sort the given array and compare consecutive elements. Following cases exists:
+
+1. nums[i] == nums[i-1] + 1: This means the current element is consecutive to previous, so increment current streak count.
+2. nums[i] == nums[i-1]: We have found the same element as previous. Skip it, and see if we can still extend the sequence with next elements.
+3. None of above : We can't extend the sequence any further. Update longest to store longest formed streak till now and reset curlongest.
+
+Time Complexity : O(NlogN)+O(N), where N is the number of elements in nums
+Space Complexity : O(1), ignoring the space required by sorting algorithm.
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int longest = 0, cur_longest = 1;
+        if(!nums.size()) return 0;
+        sort(nums.begin(), nums.end());
+        for(int i=1; i<nums.size(); i++)
+        {
+            if(nums[i]==nums[i-1]) 
+                continue;
+            else if(nums[i]==nums[i-1]+1)
+                cur_longest++;    //consecutive element - update cur_longest
+            else 
+            {
+                longest = max(longest, cur_longest);
+                cur_longest = 1;  // reset cur_longest
+            }
+        }
+        return max(longest, cur_longest);
+    }
+};
+
+✔️ Solution - II (Using Hashset)
+
+We need to find the longest consecutive sequence in linear time. We can do this if we insert all the elements of nums into a hashset. 
+Once we have inserted all the elements, we can just iterate over the hashset to find longest consecutive sequence involving the current element(let's call it num) under iteration. 
+This can simply be done by iterating over elements that are consecutive to num till we keep finding them in the set. Each time we will also delete those elements from set to ensure we only visit them once.
+
+Time Complexity : O(N)+O(N)+O(N)=O(3N)=O(N), where N is the number of elements in nums
+Space Complexity : O(N)
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        unordered_set<int> s;
+        for(int i=0;i<nums.size();i++)
+        {
+            s.insert(nums[i]);
+        }
+        int ans = 0;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(s.find(nums[i]-1) != s.end())
+                continue;
+            if(s.find(nums[i]-1) == s.end())
+            {
+                int j = nums[i]+1;
+                int k=1;
+                while(s.find(j)!=s.end())
+                {
+                    j++;
+                    k++;
+                }
+                ans = max(ans,k);
+            }
+        }
+        return ans;
+    }
+};

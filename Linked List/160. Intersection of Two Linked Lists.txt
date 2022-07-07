@@ -1,0 +1,82 @@
+//Striver ki sheet mai linked list ka first Question
+//https://www.youtube.com/watch?v=u4FWXfgS8jw
+
+//METHOD 1:
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode *temp = headB;
+        while(headA != NULL)
+        {
+            while(headB != NULL)
+            {
+                if(headA == headB)
+                   return headA;
+                headB = headB->next;
+            }
+            headA = headA->next;
+            headB = temp;
+        }
+       return headA;    
+    }
+};
+
+//METHOD 2:
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+         unordered_set<ListNode*> ump;
+         while(headA != NULL)
+         {
+              ump.insert(headA);
+              headA = headA->next;
+         }
+         while(headB != NULL)
+         {
+              if(ump.find(headB) != ump.end())
+                  return headB;
+              else
+                  ump.insert(headB);
+              headB = headB->next;
+         }
+         return 0;
+    }
+};
+
+//METHOD 3:
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        if(headA==NULL||headB==NULL)
+            return NULL;
+        
+        ListNode *a=headA;
+        ListNode *b=headB;
+        
+        while(a!=b)
+        {
+            if(a==NULL)
+            {
+                a=headB;
+            }
+            else
+            {
+                a=a->next;
+            }
+            
+            if(b==NULL)
+            {
+                b=headA;
+            }
+            else
+            {
+                b=b->next;
+            }
+        }
+        return a;
+    }
+};

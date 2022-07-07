@@ -1,0 +1,94 @@
+https://www.youtube.com/watch?v=z-NbVpzA_fs&list=PLPyD8bF-abzswXItsbav88ojXrzurguY3&index=6
+
+Sorting Approach-
+
+Time Complexity - O(nlogn)
+Space Complexity - O(n)
+
+class Solution {
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        int n=points.size();
+        vector<pair<int,int>> v;
+        vector<vector<int>> ans;
+        
+        for(int i=0; i<n; i++)
+        {
+            int d=points[i][0]*points[i][0]+points[i][1]*points[i][1];
+            v.push_back({d,i});
+        }
+        
+        sort(v.begin(),v.end());
+        
+        for(int i=0;i<k;i++)
+        {
+            ans.push_back(points[v[i].second]);
+        }
+        
+        return ans;
+    }
+};
+
+Min Heap Approach-
+
+Time Complexity - O(nlogk)
+Space Complexity - O(n)
+
+class Solution {
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        int n=points.size();
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; 
+        vector<vector<int>> ans;
+        
+        for(int i=0; i<n; i++)
+        {
+             pq.push({points[i][0]*points[i][0] + points[i][1]*points[i][1], i});
+        }
+        
+        for(int i=0;i<k;i++)
+        {
+            ans.push_back(points[pq.top().second]);
+            pq.pop();
+        }
+        
+        return ans;
+    }
+};
+
+Max Heap Approach-
+
+Time Complexity : O(nlogk)
+Space Complexity : O(k)
+
+class Solution {
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        int n=points.size();
+        priority_queue<pair<int,pair<int,int>>> pq;
+        vector<vector<int>> ans;
+        
+        for(int i=0; i<n; i++)
+        {
+            int dist=points[i][0]*points[i][0]+points[i][1]*points[i][1];
+            if(pq.size()<k)
+            pq.push({dist,{points[i][0],points[i][1]}});
+            else
+            {
+                if(dist<pq.top().first)
+                {
+                    pq.pop();
+                    pq.push({dist,{points[i][0],points[i][1]}});
+                }
+            }
+        }
+        
+        while(!pq.empty())
+        {
+            ans.push_back({pq.top().second.first,pq.top().second.second});
+            pq.pop();
+        }
+        
+        return ans;
+    }
+};

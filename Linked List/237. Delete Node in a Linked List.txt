@@ -1,0 +1,9 @@
+https://www.youtube.com/watch?v=icnp4FJdZ_c&list=PLgUwDviBIf0r47RKH7fdWN54AbWFgGuii&index=5
+
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        node->val=node->next->val;
+        node->next=node->next->next;
+    }
+};

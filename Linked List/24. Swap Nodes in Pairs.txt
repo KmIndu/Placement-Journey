@@ -1,0 +1,26 @@
+https://www.youtube.com/watch?v=DCCBR--V5AA
+
+yrr swap nodes in pairs reverse node in list ka bhai hai,, dicto similar approach hai behen... Unbelievable!!!
+
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode *current=head;
+        ListNode *previous=NULL;
+        ListNode *nex=NULL;
+        
+        int count=0;
+        while (current != NULL && count<2) {
+            nex = current->next;
+            current->next = previous;
+            previous = current;
+            current = nex;
+            count++;
+        }
+         
+        if(nex!=NULL){
+            head->next=swapPairs(nex);
+        }
+        return previous;
+    }
+};
