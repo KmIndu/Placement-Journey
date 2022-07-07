@@ -1,0 +1,64 @@
+https://www.youtube.com/watch?v=fywyCy6Fyoo&t=592s
+
+we know that overflow must happen by crossing the boundary values, so we will store all the boundary values
+we will process the element with minimum height, if water can't flow from minimum, it isn't possible through other elements
+
+we will also mark a visited array, we won't process the values which are in the visited array
+
+now we will use that minimum value with us, we will check for the neighbour of the value, if neighbours are on the boundary,
+then we don't process them. now we have three condition here
+
+1. neighbour[i][j]<min[i][j]-> in this condition we can store the value, we can add the value of
+   min[i][j]-neighbour[i][j] to our answer, we also know that now, we need to process the other values on that side too,
+   so, we will change the value of neighbour to that min[i][j] value
+
+2. neighbour=min[i][j]-> then we can't anything to our answer because water will flow over us here, so we here too move our
+    value to the neighbour and do same for neighbour's neighbour.
+
+3. neighbour>min[i][j]-> then water is blocked by the neighbour itself, we will delegate to the neighbour to check blockage by it
+
+
+class Solution {
+public:
+    int trapRainWater(vector<vector<int>>& heightMap) {
+        int m=heightMap.size();
+        int n=heightMap[0].size();
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>pq;
+        vector<vector<bool>>vis(m,vector<bool>(n, false));
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(i==0||j==0||i==m-1||j==n-1)
+                {
+                    pq.push({heightMap[i][j],{i,j}});
+                    vis[i][j]=true;
+                }
+            }
+        }
+        
+        int dx[4] = {0, 0, 1, -1};
+        int dy[4] = {1, -1, 0, 0};
+        
+        int ans=0;
+        while(pq.size())
+        {
+             int k = pq.size();
+             while(k--){
+                 auto temp=pq.top();
+                 pq.pop();
+                 int val=temp.first;
+                 int x=temp.second.first;
+                 int y=temp.second.second;
+                 for(int i = 0; i < 4; ++i){
+                      int nx = x + dx[i], ny = y + dy[i];
+                      if(nx < 0 || ny < 0 || nx >= m || ny >= n || vis[nx][ny] != false) continue;
+                      vis[nx][ny] = true;
+                      ans+=max(0,val-heightMap[nx][ny]);
+                      pq.push({max(val,heightMap[nx][ny]), {nx,ny}});
+                }
+            } 
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,50 @@
+//FIRST APPROACH -> ORDERED MAP
+class MyCalendar {
+private:
+    map<int, int>m;
+public:
+    bool book(int start, int end) {
+        
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        m[start]++;
+        m[end]--;
+        
+        int sum=0;
+        for(auto it:m)
+        {
+            sum+=it.second;
+            if(sum>=2)
+            {
+               m[start]--;
+               m[end]++;
+               return false;
+            }
+        }
+        return true;
+    }
+};
+
+//SECOND APPROACH -> OVERLAPPING INTERVALS
+class MyCalendar {
+private:
+    vector<pair<int, int>> events;
+public:
+    bool book(int start, int end) {
+        
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        for(pair<int, int>p:events)
+        {
+            //doublebooking(overlapping)
+            if(start<p.second && end>p.first)
+            {
+                return false;
+            }
+        }
+        events.push_back({start, end});
+        return true;
+    }
+};

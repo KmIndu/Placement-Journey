@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        int n=nums.size(),i;
+        vector<int> ans(n,1);
+        int left=1,right=1;
+        
+        for(i=0;i<n;i++)
+        {
+            ans[i]*=left;
+            ans[n-1-i]*=right;
+            
+            left*=nums[i];
+            right*=nums[n-i-1];
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,44 @@
+//https://www.youtube.com/watch?v=NTF7sDU0IWA
+
+//when arrow is in upward directions-> row-- column++
+//now, when column is last column, we cannot move further. So we move in row below. Otherwise we move to next column 
+//when arrow is in downward directions-> row++ column--
+//now, when row is last row, we cannot move further. So we move in column above. Otherwise we move to next row
+
+class Solution {
+public:
+    vector<int> findDiagonalOrder(vector<vector<int>>& mat) {
+        
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        vector<int> a;
+	int r=0,c=0;
+	int m = mat.size(), n = mat[0].size();
+	bool up = true;
+	while(r<m && c<n){
+		if(up){
+			while(r>0 && c<n-1){
+				a.push_back(mat[r][c]);
+				r--;
+				c++;
+			}
+			a.push_back(mat[r][c]);
+			if(c==n-1) r++;
+			else c++;
+		}
+		else{
+			while(r<m-1 && c>0){
+				a.push_back(mat[r][c]);
+				r++;
+				c--;
+			}
+			a.push_back(mat[r][c]);
+			if(r==m-1) c++;
+			else r++;
+		}
+		up = !up;
+	  }
+		    return a;
+       }
+};

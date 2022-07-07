@@ -1,0 +1,66 @@
+https://www.youtube.com/watch?v=onLoX6Nhvmg&t=29s
+
+Brute Force Solution
+Time Complexity- O(N^3 log M) Space Complexity- O(M)
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int len=nums.size();
+        if(len==0 || len<3) // Atleast three elements needed for a triplet
+            return {};
+        set<vector<int>> s; // Set stores unique elements only(duplicate triplets not added)
+        sort(nums.begin(),nums.end());
+        // Compare all cases of group of three elements for their sum=0 in O(N^3) time
+        for(int i=0;i<len-2;i++){
+            for(int j=i+1;j<len-1;j++){
+                for(int k=j+1;k<len;k++){
+                    if(nums[i]+nums[j]+nums[k]==0){
+                        s.insert({nums[i],nums[j],nums[k]});  // Inserting the triplets into the set data structure in log M time
+                    }
+                }
+            }
+        }
+        // Insert all unique triplets in result vector
+        vector<vector<int>> ans(s.begin(),s.end());
+        return ans;
+    }
+};
+
+Hash Map Solution
+Time Complexity- O(N^2 log M) Space Complexity- O(M)+O(N)
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>>ans;
+        if(n==0||n<3)
+            return ans;
+        
+        unordered_map<int,int>ump;
+        
+        for(auto num:nums){
+            ump[num]++;
+        }
+        set<vector<int>>s;
+        for(int i=0;i<n;i++){
+            ump[nums[i]]--;
+            for(int j=i+1;j<n;j++){
+                ump[nums[j]]--;
+                int c = -(nums[i]+nums[j]);
+                    if(ump.find(c)!=ump.end()&&ump[c]>0){
+                        vector<int>temp = {nums[i],nums[j],c};
+                        sort(temp.begin(),temp.end());
+                        s.insert(temp);
+                }
+                ump[nums[j]]++;
+            }
+            ump[nums[i]]++;
+        }
+        ans.assign(s.begin(),s.end());
+        return ans;
+    }
+};
+
+Two Pointer Solution

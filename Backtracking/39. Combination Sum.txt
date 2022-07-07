@@ -1,0 +1,40 @@
+luv sir ne itta acha padhaya ar stiver ki video ne ar clear kr li saari chije..
+
+https://www.youtube.com/watch?v=OyZFFqQtu98&list=PLgUwDviBIf0rGlzIn_7rsaR2FQ5e6ZOL9&index=9
+
+class Solution {
+public:
+    vector<vector<int>> res;
+    
+    void findCombination(int index, int target, vector<int> arr, vector<int> &ds)
+    {
+        //base condition
+        if(index==arr.size())
+        {
+            if(target==0)
+            {
+                res.push_back(ds);
+                return;
+            }
+            else
+                return;
+        }
+            
+        //pick up the elements
+        if(arr[index]<=target)
+        {
+            ds.push_back(arr[index]);
+            findCombination(index, target-arr[index], arr, ds);
+            ds.pop_back();  //backtracking
+        }
+        
+        // not to pick up the elements
+        findCombination(index+1, target, arr, ds);
+    }
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> ds;
+        findCombination(0, target, candidates, ds);
+        return res;
+    }
+};

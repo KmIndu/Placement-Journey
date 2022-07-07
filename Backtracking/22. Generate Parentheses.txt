@@ -1,0 +1,39 @@
+yaar inhone itte ache se samjhaya backtracking ka concept.. fan ho gyi inki!
+
+https://www.youtube.com/watch?v=4KpSXSIPH2s
+
+code neeche hai hi baki notes copy mai dekh lio... Go on girl, You can do it!!!
+
+class Solution {
+public:
+    vector<string> valid;
+    
+    void generate(string s, int open, int close ){
+        if(open==0 && close==0)
+        {
+            valid.push_back(s);
+            return;
+        }
+        if(open>0)
+        {
+            s.push_back('(');
+            generate(s, open-1, close);
+            s.pop_back(); //backtracking
+        }
+         if(close>0)
+         {
+             if(open<close)
+             {
+                 s.push_back(')');
+                 generate(s, open, close-1);
+                 s.pop_back(); //backtracking
+             }
+         }
+    }
+    
+    vector<string> generateParenthesis(int n) {
+        string s;
+        generate(s, n, n);
+        return valid;
+    }
+};

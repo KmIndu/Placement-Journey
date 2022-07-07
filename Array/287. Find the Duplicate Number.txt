@@ -1,0 +1,70 @@
+//youtube.com/watch?v=32Ll35mhWg0&t=1s
+
+//Akshay sir ka favourite question unhone class me esa kaha 😂 && Striver ki sde sheet me array ka first question..
+
+//Naive Approach(Leetcode pr ni chalega yeh..haha.😂)
+//T.C.-> O(NlogN) S.C.-> O(1)
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int ans=0;
+        for(int i=0; i<nums.size(); i++)
+        {
+            if(nums[i]==nums[i+1])
+            {
+                return nums[i];
+            }
+        }
+        return 0;
+    }
+};
+
+
+//Hashing
+//T.C.-> O(N) S.C.-> O(N)
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        unordered_map<int, int> found;
+        
+        for(int i = 0; i < nums.size(); i++)
+        {
+            found[nums[i]] += 1;
+            if(found[nums[i]] == 2)
+                return nums[i];
+        }    
+        return 0;
+    }      
+};
+
+
+//Linked List Cycle Method TORTOISE AND HARE ALGORITHM (copy mai dekh yr ache se samajh aaega..)
+//T.C.-> O(N) S.C.-> O(1)
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        int slow=nums[0];
+        int fast=nums[0];
+        
+        do
+        {
+            slow=nums[slow];
+            fast=nums[nums[fast]];
+        }
+        while(slow!=fast);
+        
+        fast=nums[0];
+        while(slow!=fast)
+        {
+            slow=nums[slow];
+            fast=nums[fast];
+        }
+        
+        return slow;
+    }
+};

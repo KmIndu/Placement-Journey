@@ -1,0 +1,47 @@
+discussion section se help lii..
+
+class Solution {
+public:
+    vector<string>v;
+    
+    void restore(string ans, string str, int idx, int k){
+        if(k==4 ){
+            if(idx>=str.length()){
+                ans.pop_back();
+                v.push_back(ans);
+            }
+            return ;
+        }
+		
+        string ip;
+        for(int i=idx;i<str.length();i++){
+            if(ip=="0"){
+                return ;
+            }
+             ip=ip+str[i];
+   
+            if(stoi(ip)>=0 && stoi(ip) <=255){
+                string x=ans;
+                ans=ans+ip+".";
+              
+                restore(ans,str,i+1,k+1);
+				
+                ans=x;
+            }
+            
+            else if(stoi(ip)>255){
+                return;
+            }
+        }
+    }
+    
+    vector<string> restoreIpAddresses(string str) {   
+       
+        string ans;
+        restore(ans, str, 0, 0);
+        return v;
+        
+    }
+    
+    
+};

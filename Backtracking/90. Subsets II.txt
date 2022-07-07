@@ -1,0 +1,38 @@
+bdi mushkil se 78. Subsets se matching approach dhundhi...almost similar code hai..
+bs nums ko sort krna hai ar ek k pointer introduce krwana hai.. dekh le:
+
+class Solution {
+public:
+    vector<vector<int>> res;
+    
+    void generate(vector<int> &subset, int i, vector<int> nums)
+    {
+        if(i==nums.size())
+        {
+            res.push_back(subset);
+            return;
+        }
+        
+        // making a pointer that will point the next new value
+        int k=1;
+        while(i+k<nums.size() && nums[i]==nums[i+k])
+        {
+           k++;
+        }
+        
+        //ith element is not considered in subset
+        generate(subset, i+k, nums);
+        
+        //ith element is considered in subset
+        subset.push_back(nums[i]);
+        generate(subset, i+1, nums);
+        subset.pop_back(); //backtracking
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) 
+    {
+         vector<int> empty;
+         sort(nums.begin(),nums.end());
+         generate(empty, 0, nums);
+         return res;
+    }
+}; 

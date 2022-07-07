@@ -1,0 +1,58 @@
+//https://www.youtube.com/watch?v=hZmwvBIJXPg
+
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        int n=nums.size();
+        int Min=INT_MAX;
+        int Max=INT_MIN;
+        
+        if(n==1)
+            return 0; 
+        
+        for(int i=0; i<n; i++)
+        {
+            if(i==0 )
+            {
+                if(nums[i]>nums[i+1])
+                {
+                    Min=min(Min, nums[i]);
+                    Max=max(Max, nums[i]);
+                }
+            }
+            else if(i==n-1 )
+            {
+                if(nums[i]<nums[i-1])
+                {
+                    Min=min(Min, nums[i]);
+                    Max=max(Max, nums[i]);
+                }
+            }
+            else
+            {
+                if(nums[i]>nums[i+1] || nums[i]<nums[i-1])
+                {
+                    Min=min(Min, nums[i]);
+                    Max=max(Max, nums[i]);
+                }
+            }            
+        }
+        
+        if(Min==INT_MAX || Max==INT_MIN)
+            return 0;
+        
+        int i=0,j=n-1;
+        
+        while(i<n && nums[i]<=Min)
+           i++;
+        while(j>=0 && nums[j]>=Max)
+           j--;
+        
+        return j-i+1;
+        
+    }
+};

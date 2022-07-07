@@ -1,0 +1,38 @@
+https://www.youtube.com/watch?v=tWnHbSHwNmA
+love babbar ne kraya tha yr
+
+class Solution {
+public:
+    void solve(string digit, unordered_map<char,string> &m, int index, string output, vector<string> &ans)
+    {
+        //base case
+         if(index>=digit.size())
+         {
+             ans.push_back(output);
+             return;
+         }
+        char number=digit[index];
+        string value=m[number];
+        
+        for(int i=0; i<value.length(); i++)
+        {
+            output.push_back(value[i]);
+            solve(digit, m, index+1, output, ans);
+            output.pop_back(); //backtrack
+        }
+        
+    }
+    vector<string> letterCombinations(string digits)
+    {
+        if(digits.empty())
+        return {} ;
+        unordered_map<char,string> m = 
+        {
+             {'2',"abc"}, {'3',"def"}, {'4',"ghi"}, {'5',"jkl"}, {'6',"mno"}, {'7',"pqrs"},{'8',"tuv"}, {'9',"wxyz"}
+        };
+        vector<string> ans ;
+        solve(digits, m, 0, "", ans) ;
+        return ans ;
+        
+    }
+};

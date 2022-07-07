@@ -1,0 +1,33 @@
+leetcode ke discussion section se help le li thi..
+
+class Solution {
+public:
+    vector<string> result;
+    
+    void permutation(string in, string out, int i, int n){
+        if(i==n){
+            result.push_back(out);
+            return;
+        }
+        if(in[i]>='0' && in[i]<='9'){
+            permutation(in, out+in[i], i+1, n); // No change
+        } 
+        else if(in[i]>='a' && in[i]<='z'){
+            char c = in[i]-32;
+            permutation(in, out+c, i+1, n); // Toggle the character 
+            permutation(in, out+in[i], i+1, n); // No change
+        } 
+        else if(in[i]>='A' && in[i]<='Z'){
+            char c = in[i]+32;
+            permutation(in, out+c, i+1, n); // Toggle the character 
+            permutation(in, out+in[i], i+1, n); // No change
+        }
+    }
+    
+    vector<string> letterCasePermutation(string S) {
+        
+        int n = S.size();
+        permutation(S, "", 0, n);
+        return result;        
+    }
+};

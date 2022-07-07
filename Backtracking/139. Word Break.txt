@@ -1,0 +1,76 @@
+Tech Dose Video link:
+https://www.youtube.com/watch?v=th4OnoGasMU
+
+5 approaches to do this problem-
+1. Backtracking
+2. Memoization
+3. Dynamic Programming
+4. BFS
+5. Trie
+
+Approach 1 -> Recursion(TLE)
+Split the array at every point and check if any partition is true
+Time Complexity : O(2^N)
+Auxiliary Space : O(N)
+
+Approach 2 -> Backtracking
+Only split the array at the points where a solution is possible , else ignore it
+As soon as a true solution is found return true
+It also gives TLE
+Time Complexity : O(2^N)
+Auxiliary Space : O(N)
+
+class Solution {
+public:
+    bool dfs(string &s,unordered_set<string> &us,int start=0)
+    {
+        if(start>=s.size())
+        {
+            return true;
+        }
+        string aux;
+        for(int i=start;i<s.size();i++)
+        {
+            aux.push_back(s[i]);
+            if(us.find(aux)==us.end()) continue;
+            if(dfs(s,us,i+1)) return true;
+        }
+        return false;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> us; //put dictionary in a hashset for quick lookup
+        for(auto &i: wordDict) us.insert(i);
+		  return dfs(s,us);
+    }
+};
+
+Approach 3 -> Dynamic Programming
+Its clear we are solving a problem multiple times, this problem should be solvable in linear time as there is only a single parameter that is changing with recursion calls , which is 'start'
+Thus create a DP table and cache the results and we are done
+Time : 4ms
+Time Complexity : O(N)
+Auxiliary Space: O(N)
+
+typedef vector<short> VS;
+class Solution {
+public:
+    int dfs(string &s,unordered_set<string> &us,VS &dp,int start=0)
+    {
+        if(start>=s.size()) return true;
+        if(dp[start]!=-1) return dp[start];
+        string aux;
+        for(int i=start;i<s.size();i++)
+        {
+            aux.push_back(s[i]);
+            if(us.find(aux)==us.end()) continue;
+            if(dfs(s,us,dp,i+1))  return dp[start]= true;
+        }
+        return dp[start]=false;
+    }
+    bool wordBreak(string &s, vector<string>& wordDict) {
+        unordered_set<string> us;
+        for(auto &i: wordDict) us.insert(i);
+        VS dp(s.size(),-1);  // for caching results
+        return dfs(s,us,dp);         
+    }
+};

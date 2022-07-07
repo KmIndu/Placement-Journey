@@ -1,0 +1,65 @@
+//https://www.youtube.com/watch?v=_7B_HzJUE6E
+
+//FIRST APPROACH -> ORDERED MAP
+
+class MyCalendarTwo {
+private:
+    map<int, int>m;
+    
+public:    
+    bool book(int start, int end) {
+        
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        m[start]++;
+        m[end]--;
+        
+        int sum=0;
+        for(auto it:m)
+        {
+            sum+=it.second;
+            if(sum>=3)
+            {
+               m[start]--;
+               m[end]++;
+               return false;
+            }
+        }
+        return true;
+    }
+};
+
+//SECOND APPROACH -> OVERLAPPING INTERVALS
+
+class MyCalendarTwo {
+private:
+    vector<pair<int, int>> events;
+    vector<pair<int, int>> doublebooking;
+    
+public:
+    bool book(int start, int end) {
+        
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        
+        for(pair<int, int>p:doublebooking)
+        {
+            //overlap
+            if(start<p.second && end>p.first)
+            {
+                return false;
+            }
+        }
+        for(pair<int, int>p:events)
+        {
+            //doublebooking
+            if(start<p.second && end>p.first)
+            {
+                doublebooking.push_back({max(start, p.first), min(end, p.second)});
+            }
+        }
+        events.push_back({start, end});
+        return true;
+    }
+};
