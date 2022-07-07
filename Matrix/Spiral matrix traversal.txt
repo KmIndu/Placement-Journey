@@ -1,0 +1,60 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix)
+    {
+        int minrow=0;
+        int mincol=0;
+        
+        int maxrow=matrix.size()-1;
+        int maxcol=matrix[0].size()-1;
+        
+        int dir=0;
+        
+        vector<int> ans;
+        
+        int i,j;
+               
+        while(minrow<=maxrow && mincol<=maxcol)
+        {
+            //top wall
+            if(dir==0)
+            {
+                for(i=minrow, j=mincol; j<=maxcol; j++)
+                {
+                   ans.push_back(matrix[i][j]);
+                }
+                minrow++;
+            }            
+            //right wall
+            else if(dir==1)
+            {
+                for(i=minrow, j=maxcol; i<=maxrow; i++)
+                {
+                    ans.push_back(matrix[i][j]);
+                }
+                maxcol--;
+            } 
+            //bottom wall
+            else if(dir==2)
+            {
+                for(i=maxrow, j=maxcol; j>=mincol; j--)
+                {
+                    ans.push_back(matrix[i][j]);
+                }
+                maxrow--;
+            }
+            //left wall
+            else if(dir==3)
+            {
+                for(i=maxrow, j=mincol; i>=minrow; i--)
+                {
+                   ans.push_back(matrix[i][j]);
+                }
+                mincol++;
+            }
+            dir=(dir+1)%4;
+        }
+        return ans;
+    }
+
+};

@@ -1,0 +1,37 @@
+https://www.youtube.com/watch?v=Y72QeX0Efxw&t=10s
+
+Brute Force Solution
+Time Complexity - O(N^2) & Auxiliary Space Complexity - O(N^2)
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int len=matrix.size();
+        vector<vector<int>> v;
+        v=matrix;
+        for(int i=0;i<len;i++){
+            for(int j=0;j<len;j++){
+                v[j][len-i-1]=matrix[i][j];
+            }
+        }
+        matrix=v;  
+    }     
+};
+
+Optimal Solution
+Time Complexity - O(N^2) & Auxiliary Space Complexity - O(1)
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                swap(matrix[i][j], matrix[j][i]);              
+            }
+        }
+        for(int i=0;i<n;i++){
+            reverse(matrix[i].begin(),matrix[i].end());
+        }
+    }
+};
