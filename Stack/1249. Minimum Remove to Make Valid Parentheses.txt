@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+        int n = s.size();
+        stack < int > pos;
+
+        for (int i = 0; i < n; ++i) {
+           if (s[i] == '(') {
+             pos.push(i);
+             continue;
+           }
+           else if (s[i] == ')') {
+              if (!pos.empty() and s[pos.top()] == '(')
+                pos.pop();
+              else
+                pos.push(i);
+           }
+        }
+        while (!pos.empty()) {
+            s.erase(pos.top(), 1);
+            pos.pop();
+        }
+        return s;      
+    }
+};

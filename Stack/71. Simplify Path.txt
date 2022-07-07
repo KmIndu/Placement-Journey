@@ -1,0 +1,107 @@
+Consider a path: "/./coding/goback/../simplepath"
+
+As we know every string that appears between two /'s is a folder name. For the above path, folder names are:
+
+.
+coding
+goback
+..
+simplepath
+
+Solution:
+
+Traverse the string and extract the folder names in the path and perform the following operations:
+
+. :
+
+According to problem, do nothing in this case.
+
+coding:
+
+Push / into stack
+Reverse the folder name and push into stack
+Stack looks like:
+   / --> gnidoc --> NULL
+
+goback:
+
+Push / into stack
+Reverse the folder name and push into stack
+Stack looks like:
+   / --> gnidoc --> / --> kcabog --> NULL
+
+.. :
+
+Now, we need to move back one folder.
+Hence pop two elements from stack ( 1. folder name and 2. / )
+Stack looks like:
+/ --> gnidoc --> NULL
+
+simplepath:
+
+Push / into stack
+Reverse the folder name and push into stack
+Stack looks like:
+   / --> gnidoc --> / --> kcabog --> / --> htapelpmis --> NULL
+
+I think you can clearly observe the simple path for the given path in the stack already. Just pop the stack elements.
+
+Ater popping elements, path looks as follows:
+htapelmis/kcabog/gnidoc/
+
+It looks like reverse order of the simple path, isn't it? Hence reverse the string.
+/coding/goback/simplepath
+
+Now, try without reversing the string while pushing into stack. Then you'll get a clear picture of why to reverse the string while pushing.
+
+class Solution {
+public:
+    string simplifyPath(string path) {
+	stack<string> st;
+	string folderName;
+	
+	int i = 0;
+	int n = path.length();
+
+	while(i<n){
+		// Extracting the folder name
+		while(i<n && path[i] != '/'){
+			folderName += path[i];
+			i++;                
+		}
+		if(folderName.size() != 0){
+			// For '.' do nothing
+			if(folderName == "."){
+				folderName.clear();
+			}
+			// For ".." go back one folder .i.e. remove '/' and 'previous folder'
+			else if(folderName == ".."){
+				// For removing folder name
+				if(!st.empty()){
+					st.pop();
+				}
+				// For removing /
+				if(!st.empty()){
+					st.pop();
+				}
+				folderName.clear();
+			}
+			else{
+				st.push("/");
+				reverse(folderName.begin(), folderName.end());
+				st.push(folderName);
+				folderName.clear();
+			}
+		}    
+		i++;
+	}
+	string ans;
+	while(!st.empty()){
+		ans += st.top();
+		st.pop();
+	}
+	reverse(ans.begin(), ans.end());
+	
+	return ans.empty() ? "/" : ans;
+  }
+};

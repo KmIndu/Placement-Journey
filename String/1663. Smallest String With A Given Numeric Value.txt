@@ -1,0 +1,34 @@
+https://www.youtube.com/watch?v=e8oCupD83qk
+
+Wanna revise the approach for this question? Watch the video from the above link. It will hardly take your 10 minutes. Thank You!
+
+class Solution {
+public:
+    string getSmallestString(int n, int k) {
+       vector<int> v(n, 1); // k= 73  1 1 1 1 1 =5  73-5 = 68
+        k=k-n;
+        
+        int i=n-1;
+        while(k>0)
+        {
+            if(k>25)
+            {
+                v[i]=26;
+                i--;
+                k=k-25;
+            }
+            else
+            {
+                v[i]=k+1;
+                k-=k;
+            }
+        }
+        string output;
+        for(int i=0; i<v.size(); i++)
+        {
+            output+=char(v[i]+96);
+        }
+        return output;
+    }
+};
+

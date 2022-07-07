@@ -1,0 +1,26 @@
+Techdose ki video se dekhri isko bhi...
+
+https://www.youtube.com/watch?v=_i0jqdVkObU
+
+class Solution {
+    void swap(TreeNode *curr)
+    {
+        if(!curr)
+            return;
+        
+        swap(curr->left);
+        swap(curr->right);
+        
+        //Swap the child pointers
+        TreeNode *temp;
+        temp = curr->left;
+        curr->left = curr->right;
+        curr->right = temp;
+    }
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        
+        swap(root);     //Creates mirror image
+        return root;
+    }
+};

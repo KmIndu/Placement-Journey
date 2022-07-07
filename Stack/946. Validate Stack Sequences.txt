@@ -1,0 +1,63 @@
+https://www.youtube.com/watch?v=zafraJVHUGU
+
+Approach 1:
+
+ALGORITHM
+
+If the element X has been pushed to the stack then check if the top element in the pop[] sequence is X or not.
+If it is X then pop it right now else top of the push[] sequence will be changed and make the sequences invalid.
+similarly, do the same for all the elements and check if the stack is empty or not in the last.
+If empty then return True else return False.
+
+Time Complexity: O(N)
+Space Complexity: O(N)
+    
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+        stack<int> st;
+        for(int i=0, j=0; i<pushed.size(); i++)
+        {
+            st.push(pushed[i]);
+            while(!st.empty() && st.top()==popped[j])
+            {
+                st.pop();
+                j++;
+            }
+        }
+        return st.empty();
+    }
+};
+
+
+Approach 2:
+
+Time Complexity: O(N)
+Space Complexity: O(1)
+
+ALGORITHM
+
+Using pushed vector as a stack.
+Same Steps as above approach.
+As both pushed and popped are permutation of each other.
+At end the vector will be empty if sequence is correct.
+
+
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+       int i=0, j=0;
+       for(int x: pushed)
+       {
+           pushed[i]=x;
+           i++;
+           while(i>0 && pushed[i-1]==popped[j])
+           {
+               cout<<i<<endl;
+               --i;
+               ++j;
+           }
+       }
+       return i==0;
+    }
+};

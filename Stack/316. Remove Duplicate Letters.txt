@@ -1,0 +1,48 @@
+https://www.youtube.com/watch?v=_8WLoYLidTE
+
+//Time complexity O(N)  Space complexity O(N)
+
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        //Map to store last index of every char
+        unordered_map<char, int>lastIndex; 
+        
+        //Storing the last index of each character
+        for(int i = 0; i < s.size(); i++)
+            lastIndex[s[i]] = i; 
+        
+        //Vector to check if the character is visited, initially marked as false
+        vector<bool>visited(26, false);   
+        
+        //Stack to store elements in descending order
+        stack<char> st;
+        
+        for (int i = 0; i < s.size(); i++) {
+            //If index is visited, pass
+            if (visited[s[i]- 'a'] == true) continue;   
+            
+            //If s[i] is smaller than top of stack and there is afterwards occcurence of 
+            //element present in top of stack, remove element from top of stack
+            //after marking it false in visited array
+            while(st.size() > 0 && st.top() > s[i] && i < lastIndex[st.top()]){
+                visited[st.top()- 'a'] = false; 
+                st.pop();
+            }
+            
+            st.push(s[i]);  //Adding the current character to stack
+            visited[s[i]- 'a'] = true;   //Marking the current node visited
+        }
+        
+        //Empty the stack and concatenate to string res
+        string res = "";
+        while (!st.empty()) {
+            res+=st.top();
+            st.pop();
+        }
+        
+        //Reverse string because we have maintained descending order
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};

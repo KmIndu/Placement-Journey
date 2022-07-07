@@ -1,0 +1,7 @@
+class Solution {
+public:
+    bool checkString(string s) {
+      //check if s is sorted or not.If sorted then all a's will be appeared infront of b.
+      return is_sorted(s.begin(),s.end());
+    }
+};

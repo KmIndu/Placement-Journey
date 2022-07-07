@@ -1,0 +1,21 @@
+String is even length. For the first half, when we encounter vowel, increment the count.
+For the second half, decrement the count.
+In the end, if count is 0, that means strings are alike otherwise not.
+
+class Solution {
+public:
+    bool halvesAreAlike(string s) {
+         int count=0, i;
+        for(i=0; i<s.size(); i++)
+        {
+            if(s[i]=='a' || s[i]=='e'|| s[i]=='i' || s[i]=='o' || s[i]=='u' || s[i]=='A' || s[i]=='E' || s[i]=='I' || s[i]=='O' || s[i]=='U')
+            {
+                if(i<s.size()/2)
+                    count++;
+                else
+                    count--;
+            }
+        }
+        return count==0? true: false;
+    }
+};

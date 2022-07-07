@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int numJewelsInStones(string jewels, string stones) {
+        unordered_map<char,int> umap; 
+        for(int i=0;i<stones.size();i++)                 
+        {
+            umap[stones[i]]++;                               
+        }
+        int count=0;
+        for(char c:jewels){
+            if(umap.find(c)!=umap.end()){
+                count+=umap[c];
+            }
+        }
+        return count;
+    }
+};

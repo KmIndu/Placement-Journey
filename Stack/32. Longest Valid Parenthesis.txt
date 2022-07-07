@@ -1,0 +1,45 @@
+//https://www.youtube.com/watch?v=VdQuwtEd10M
+
+//Here we will create a stack called index stack in which we will initially push -1
+//-1 is pushed to calculate length of longest valid string if it starts from starting
+// Ex -   ( ( ) )
+//    -1  0 1 2 3           max_len = 3 -(-1) = 4
+
+//Now what we will do is if we encounter an opening bracket then we will push its index
+//and if we encounter a closing bracket then we pop the top of stack which is the index of a opening backet
+//if stack is not empty then we will calculate the length as i - stack.top() and update length it is greater
+//if stack is empty it means we encountered a clossing bracket because of which continuity of valid string
+//is broken so we will push this clossing bracket's index in stack to form the new base(like -1)
+
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        if(s.size() == 0) return 0;
+        stack<int> idx;
+        
+        idx.push(-1);
+        int length=0;
+        
+        for(int i=0; i< s.size(); i++)
+        {
+            if(s[i] == '(')
+            {
+                idx.push(i);
+            }
+            else{
+                
+                idx.pop();
+                
+                if(idx.empty())
+                {
+                    idx.push(i);
+                }
+                else{
+                    length = max(length, i - idx.top());   
+                }                
+            } 
+        }
+        
+        return length;    
+    }
+};

@@ -1,0 +1,22 @@
+class Solution {
+public:
+   
+    string reverseWords(string &s) {
+        string str;
+        string ans;
+        int n=s.size();
+        for(int i=0;i<=n-1;i++){
+            while(i<=n-1&&s[i]==' ')i++;  // ignoring spaces before word
+            while(i<=n-1&&s[i]!=' '){
+                str+=s[i];
+                i++;
+            }
+            reverse(str.begin(),str.end());
+            ans+=str;
+            ans+=' ';                     
+            str.clear();
+        }
+        while(ans.back()==' ') ans.pop_back();  // removing extra spaces from back of string
+        return ans;
+    }
+};

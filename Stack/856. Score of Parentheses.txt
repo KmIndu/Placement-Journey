@@ -1,0 +1,74 @@
+https://www.youtube.com/watch?v=BwF9yyUY3SA
+
+Let's understand our rule's first of all :-
+If our input string is "()" then our score will be 1, so this is our first rule.
+If we have input string "()()" then our score will be 1 + 1 i.e. 2, where 1 is a score of a balanced parentheses. So, this is our second rule.
+Now last rule say's, if we have given something like "(())" in our input string, our score will be 2 X 1 i.e. 2, it means that we have something like nested parenthesis. 
+Then multiply it by 2.
+
+Let's take a look how do we calculate the score on following examples:
+()() => 1+1
+(()()) => 2*(1+1)
+((()())) => 2*2*(1+1)
+((()(()))) => 2*2*(1+2*1)
+
+Approach 1:
+
+Time Complexity :- O(N)
+Space Complexity :- O(N)
+
+class Solution {
+public:
+    int scoreOfParentheses(string s) {
+        stack<int>st;
+        int score=0;
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='('){//if we find open parenthesis, push the current score into the stack
+                st.push(score);
+                score=0;//reset the score to 0
+            }
+            else if(s[i]==')'){//if we find close parenthesis
+                score=st.top()+ max(2* score , 1);
+                st.pop();
+            }
+        }
+        return score;//return score
+    }
+};
+
+
+Approach 2:
+
+Time Complexity :- O(N)
+Space Complexity :- O(1)
+
+We can see that any () in the string gives a score depending on its depth. 
+If () is located on the higher possible level (depth=0), the score is simply a 1. 
+If it's located deeper, we just multiply it by 2 as many times as its depth. 
+The found score we can just add to the final result. Why can we do that? 
+Remember that, for example, this expression 2*2*(1+1) can be expressed as 2*2+2*2. 
+No matter how deep parenthesis, the final expression of score can be represented as a sum of () scores.
+
+class Solution {
+public:
+    int scoreOfParentheses(string s) {
+        int depth = 0, res = 0;
+        char prev = '(';
+        
+        for (const char &ch: s) {
+            if (ch == '(')
+                depth++;
+            else {
+                depth--;
+                if (prev == '(')
+                    res += pow(2, depth);
+            }
+            
+            prev = ch;
+        }
+        
+        return res;
+    }
+};
+
+
