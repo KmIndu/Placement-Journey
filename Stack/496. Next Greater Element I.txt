@@ -1,4 +1,7 @@
-Adi sir!
+Adi sir wali approach hai dicto!
+bs hashmap ar use kia hai khud se..
+It's very easy my girl!
+
 
 class Solution {
 public:
