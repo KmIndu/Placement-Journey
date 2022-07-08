@@ -1,0 +1,68 @@
+https://www.youtube.com/watch?v=6yOWLXlWOJc&ab_channel=AyushiSharma
+
+Time Complexity : O(n)
+Space Complexity : O(n)
+
+1. "["
+    push(currN, currS)
+    currN=0
+    currS=""
+
+2. digit
+    add in currN
+
+3. char
+    add in currS
+
+4. "]"
+   pop currN and store in prevN
+   pop currS and store in prevS
+
+  for(int i=0; i<prevN; i++)
+   {
+            temp=temp+currS;
+   }
+   currS=prevS+temp;
+
+
+class Solution {
+public:
+    string decodeString(string s) {
+        stack<string>st;
+        int currN=0;
+        string currS="";
+        int prevN=0;
+        string prevS="";
+        for(int i=0; i<s.length(); i++)
+        {
+            if(isdigit(s[i])){
+                currN=currN*10+(s[i]-'0'); 
+            }
+            else if(s[i]=='[')
+            {
+                st.push(currS);
+                st.push(to_string(currN));
+                currN=0;
+                currS="";
+            }  
+            else if(s[i]==']')
+            {
+                prevN= stoi(st.top());
+                st.pop();
+                prevS=st.top();
+                st.pop();
+                string temp="";
+                for(int i=0; i<prevN; i++)
+                {
+                    temp=temp+currS;
+                }
+                currS=prevS+temp;
+            }
+            else
+            {
+                currS+=s[i];
+            }
+        }
+        return currS;
+    }
+};
