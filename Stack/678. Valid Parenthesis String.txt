@@ -1,0 +1,46 @@
+woow yrrr techdose ne kitta msst samjhaya yrr....
+
+https://www.youtube.com/watch?v=KuE_Cn3xhxI&ab_channel=TECHDOSE
+
+class Solution {
+public:
+    bool checkValidString(string s) {
+        stack<int> openst;
+        stack<int> starst;
+        int count=0;
+        for(int i=0; i<s.length(); i++)
+        {
+            if(s[i]=='(')
+            {
+                openst.push(i);
+            }
+            else if(s[i]=='*')
+            {
+                starst.push(i);
+            }
+            else 
+            {
+                if(!openst.empty())
+                    openst.pop();
+                else if(!starst.empty())
+                    starst.pop();
+                else
+                    return false;
+            }     
+        }
+        //Now process leftover opening brackets
+        while(!openst.empty())
+        {
+            if(starst.empty())
+                return false;
+            else if(openst.top() < starst.top())
+            {
+                openst.pop();
+                starst.pop();
+            }
+            else    //CASE: openst.top() > starst.top()
+                return false;
+        }
+        return true;
+    }
+};
